@@ -1,6 +1,6 @@
 import {StyleSheet, View, Text, Pressable, Image, Platform} from "react-native";
 import {useNavigation} from "@react-navigation/native";
-import Meal from "../models/meal";
+import Meal from "../../models/meal";
 
 function MealItem({ meal } : { Meal }) {
   const { id, title, imageUrl, duration, complexity, affordability } = meal;
