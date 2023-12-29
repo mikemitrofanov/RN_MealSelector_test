@@ -1,14 +1,42 @@
 import 'react-native-gesture-handler';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import {Button, StyleSheet, Text, View} from 'react-native';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import CategoriesScreen from "./screens/CategoriesScreen";
 import MealsScreen from "./screens/MealsScreen";
 import MealDetailsScreen from "./screens/MealDetailsScreen";
+import FavouritesScreen from "./screens/FavouritesScreen";
 
 const Stack = createNativeStackNavigator();
+const Drawer = createDrawerNavigator();
+
+const DrawerNavigator = () => {
+  return (
+    <Drawer.Navigator screenOptions={{
+      headerStyle: { backgroundColor: '#351401' },
+      headerTintColor: 'white',
+    }}>
+      <Drawer.Screen
+        name='categories_drawer'
+        component={CategoriesScreen}
+        options={{
+          title: 'All Categories'
+        }}
+      />
+      
+      <Drawer.Screen
+        name='favourites'
+        component={FavouritesScreen}
+        options={{
+          title: 'Favourites'
+        }}
+      />
+    </Drawer.Navigator>
+  )
+}
 
 export default function App() {
   return (
@@ -26,8 +54,10 @@ export default function App() {
         }}>
           <Stack.Screen
             name="categories"
-            options={{ title: 'All Categories' }}
-            component={CategoriesScreen}
+            options={{
+              headerShown: false
+            }}
+            component={DrawerNavigator}
           />
           
           <Stack.Screen

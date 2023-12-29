@@ -1,14 +1,26 @@
-import {StyleSheet, View, Text, Image} from "react-native";
+import {StyleSheet, View, Text, Image, ScrollView, Button} from "react-native";
 import { Meals } from "../data/dummy-data";
+import Subtitle from "../components/MealDetails/Subtitle";
+import List from "../components/MealDetails/List";
+import {useLayoutEffect} from "react";
+import IconButton from "../components/IconButton";
 
-function MealDetailsScreen({ route }) {
+function MealDetailsScreen({ route, navigation }) {
   const { params: { mealId } } = route;
   const {
     imageUrl, title, duration, complexity, affordability, steps, ingredients
   } = Meals.find(item => item.id === mealId);
   
+  const headerButtonHandler = () => {}
+  
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => <IconButton icon='star' color='white' onPress={headerButtonHandler}/>
+    })
+  }, [navigation, headerButtonHandler]);
+  
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <Image source={{ uri: imageUrl }} style={styles.image}/>
       <Text style={styles.title}>{title}</Text>
   
@@ -18,11 +30,16 @@ function MealDetailsScreen({ route }) {
         <Text style={styles.detailItem}>{affordability}</Text>
       </View>
       
-      <Text style={styles.subtitle}>Ingredients</Text>
-      {ingredients.map(item => <Text key={item}>{item}</Text>)}
-      <Text style={styles.subtitle}>Steps</Text>
-      {steps.map(item => <Text key={item}>{item}</Text>)}
-    </View>
+      <View style={styles.listOuterContainer}>
+        <View style={styles.listContainer}>
+          <Subtitle>Ingredients</Subtitle>
+          <List data={ingredients} />
+      
+          <Subtitle>Steps</Subtitle>
+          <List data={steps} />
+        </View>
+      </View>
+    </ScrollView>
   )
 }
 
@@ -30,7 +47,7 @@ export default MealDetailsScreen;
 
 const styles = StyleSheet.create({
   container: {
-  
+    marginBottom: 32
   },
   
   image: {
@@ -59,10 +76,11 @@ const styles = StyleSheet.create({
     color: 'white'
   },
   
-  subtitle: {
-    color: 'white',
-    fontWeight: 'bold',
-    fontSize: 18,
-    margin: 6
+  listOuterContainer: {
+    alignItems: 'center'
+  },
+  
+  listContainer: {
+    width: '80%',
   }
 });
